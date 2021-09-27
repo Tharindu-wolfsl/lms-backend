@@ -6,6 +6,31 @@ const app = express();
 const mysql = require("mysql");
 const bodyParser = require('body-parser')
 
+var session=require('express-session')
+var bodyparser = require("body-parser");
+var path=require('path');
+
+app.use(bodyparser());
+app.set('views', path.join(__dirname, 'views'));
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+app.use(session({ 
+    secret: '123456cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 }
+  }))
+var registrationRouter = require('./routes/admin_reg_route');
+var loginRouter = require('./routes/admin_login_route');
+var dashboardRouter = require('./routes/admin_dashboard_route');
+var logoutRouter = require('./routes/admin_logout_route');
+
+app.use('/', registrationRouter);
+app.use('/', loginRouter);
+app.use('/', dashboardRouter);
+app.use('/', logoutRouter);
+
 
 const db = mysql.createPool({
     host: "localhost",
@@ -41,10 +66,18 @@ app.post("/api/insert", (req, res) => {
 
 
 
+
+    //add to students table
     const sqlInsert = "INSERT INTO students (fname,lname,school,phone,email,grade,medium) VALUES (?,?,?,?,?,?,?)";
     db.query(sqlInsert, [fname, lname, school, phone, email, grade, medium], (err, result) => {
         console.log(err);
     });
+
+    // add to student_Login table
+    // const sqlInsert1 = "INSERT INTO student_login (std_name) VALUES (?)";
+    // db.query(sqlInsert1, [fname + ' ' + lname], (err, result) => {
+    //     console.log(err);
+    // });
 
 });
 // app.delete("/api/delete", (req, res) => {
