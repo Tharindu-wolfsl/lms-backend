@@ -34,12 +34,14 @@ var loginRouter = require('./routes/admin_login_route');
 var dashboardRouter = require('./routes/admin_dashboard_route');
 var logoutRouter = require('./routes/admin_logout_route');
 var addClassRouter=require('./routes/add_class_route');
+var addLinkRouter=require('./routes/add_link_route');
 
 app.use('/', registrationRouter);
 app.use('/', loginRouter);
 app.use('/', dashboardRouter);
 app.use('/', logoutRouter);
 app.use('/',addClassRouter);
+app.use('/',addLinkRouter);
 
 const db = mysql.createPool({
     host: "localhost",
@@ -74,7 +76,23 @@ app.post("/api/insert", (req, res) => {
     const email = req.body.email
     const grade = req.body.formHorizontalRadios
     const medium = req.body.formHorizontalRadios2
+    // const file=req.files.image
+    //     if(file.mimetype="image/jpeg"|| file.mimetype=="image/png" || file.mimetype=="image/gif"){
+    //         var imageName=file.name
+    //         console.log(imageName)
+    //         var uuidname=uuid.v1();
+    //         var imgsrc = 'http://127.0.0.1:3001/images/' + uuidname + file.name
+    //         var insertData = "INSERT INTO students(image)VALUES(?)";
+    //         db.query(insertData,[imgsrc],(err,result)=>{
 
+    //             if (err) throw err
+    //             file.mv('public/images/' + uuidname + file.name)
+    //             res.send("Data successfully save")
+
+    //         })
+    // }
+
+    
 
 
 
@@ -93,14 +111,20 @@ app.post("/api/insert", (req, res) => {
 });
 
 
-app.get('/',(req,res)=>{
+app.get('/student_table',(req,res)=>{
 
     db.query("SELECT * FROM students",(err,result)=>{
         if(err) throw err;
         console.log(result);
-        res.render('student_view',{
-            result:result
-        })
+        if(req.session.loggedinUser){
+            res.render('student_view',{
+                email:req.session.emailAddress,
+                result:result
+            })
+            
+        }else{
+            res.redirect('/login');
+        }
     })
 
 })
@@ -134,9 +158,13 @@ app.get('/view_class',(req,res)=>{
     db.query("SELECT * FROM class_category",(err,result)=>{
         if(err) throw err;
         console.log(result);
-        res.render('view_class',{
-            result:result
-        })
+        if(req.session.loggedinUser){
+            res.render('view_class',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
     })
 
 })
@@ -176,7 +204,12 @@ app.post('/update',function(req,res){
 //shedule
 
 app.get('/class_lib',(req,res)=>{
-    res.render('home');
+    if(req.session.loggedinUser){
+        res.render('home',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
 });
 
 app.post('/create_lib',(req,res)=>{

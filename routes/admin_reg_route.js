@@ -6,7 +6,7 @@ var app=express();
 // to display registration form 
 
 app.set('view engine', 'handlebars');
-router.get('/register', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('admin_reg_form');
 });
 
