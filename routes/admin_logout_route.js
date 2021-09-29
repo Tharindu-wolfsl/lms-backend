@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var app=express();
 
-app.set('view engine', 'html');
+app.set('view engine', 'handlebars');
 
 /* GET users listing. */
 router.get('/logout', function(req, res) {

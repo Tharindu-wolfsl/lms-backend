@@ -3,7 +3,7 @@ var router = express.Router();
 var db=require('../database');
 var app=express();
 /* GET users listing. */
-app.set('view engine', 'html');
+app.set('view engine', 'handlebars');
 router.get('/login', function(req, res, next) {
   res.render('admin_login_form');
 });

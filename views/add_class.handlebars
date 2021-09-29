@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</head>
+<body>
+<div class="add_class_form">
+  <h3>Add classes</h3>
+{{!-- <p> <%=(typeof alertMsg!='undefined')? alertMsg:''%></p> --}}
+<form method="post" action="add_class">
+<div class="form-container">
+  
+   <div> <select name="class_name">
+          <option value="Mathemtaics">Mathematics</option>
+           <option value="Science">Science</option>
+            
+      </select></div>
+</div>
+<div class="form-container">
+  <div>
+      <select name="grade">
+          <option value="Grade 10">Grade 10</option>
+           <option value="Grade 11">Grade 11</option>
+            <option value="After O/L">After O/L</option>
+      </select>
+  </div>
+  <div><select name="medium">
+          <option value="English">English</option>
+           <option value="Sinhala">Sinhala</option>
+            
+      </select></div>
+  <div><input type="text" placeholder="prize(per month)" name="cost"></div>
+</div>
+
+<button type="submit" >Add class</button>
+<a href="/view_class">Class Details</a>
+
+
+</form>
+</div>
+
+
+
+</body>
+</html>

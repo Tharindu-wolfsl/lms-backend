@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</head>
+<body>
+<div class="container-fluid" >
+    <div text-align="center"><h3>Student data</h3></div>
+    
+    <table class="table mt-5">
+        <tr> <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name></th>
+        <th>Email</th>
+        <th>Tel No</th>
+        <th>School</th>
+        <th>Grade</th>
+        <th>Medium</th>
+        <th>Profile_image</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Update</th>
+        <th>Delete</th>
+        </tr>
+        <tbody>
+            {{#each result}}
+            <tr>
+                <td>{{this.std_id}}</td>
+                <td>{{this.fname}}</td>
+                <td>{{this.lname}}</td>
+                <td>{{this.email}}</td>
+                <td>{{this.phone}}</td>
+                <td>{{this.school}}</td>
+                <td>{{this.grade}}</td>
+                <td>{{this.medium}}</td>
+                <td>{{this.image}}</td>
+                <td><input type="text" name="username" id="un"></td>
+                <td><input type="text" name="password" id="pw"></td>
+               <td> <button class= "upd btn btn-primary" name="update" id="upd">Update</button></td>
+               <td> <button class="del btn btn-danger" name="delete">Delete</button></td>
+                
+
+            </tr>
+            {{/each}}
+            
+        </tbody>
+
+       
+    </table>
+
+</div>
+
+    
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $('.del').click(function(){
+
+        var ino=$(this).parent().parent().children().first().html();
+        $.ajax({
+            type:'post',
+            url:'/deleteuser',
+            data:{std_id:ino},
+            success:function(data){
+
+            }
+
+        });
+    });
+
+</script>
+<script>
+   $(document).ready(function(){
+    // Get value on button click and show alert
+    $("#upd").click(function(){
+         var ino=$(this).parent().parent().children().first().html();
+        var un = $("#un").val();
+        var pw =$("#pw").val();
+          $.ajax({
+            type:'post',
+            url:'/update',
+            data:{std_id:ino,username:un,password:pw},
+            success:function(data){
+
+            }
+
+        });
+        
+    });
+});
+
+</script>
+
+

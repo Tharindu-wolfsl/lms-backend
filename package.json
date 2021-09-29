@@ -16,9 +16,12 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
+    "express-handlebars": "^5.3.4",
     "express-session": "^1.17.2",
+    "handlebars": "^4.7.7",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.13",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "uuid": "^8.3.2"
   }
 }
