@@ -3,17 +3,19 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const handlebars=require('express-handlebars');
 var uuid = require('uuid')
+const cookieParser=require('cookie-parser');
+const jwt=require('jsonwebtoken');
 
 
 const app = express();
 const mysql = require("mysql");
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser') 
 
 var session=require('express-session')
-var bodyparser = require("body-parser");
+
 var path=require('path');
 
-app.use(bodyparser());
+app.use(bodyParser());
 app.use(express.static("./public"))
 // app.set('view engine', 'ejs')
 app.engine('handlebars',handlebars({defaultLayout:'main'}));
@@ -22,12 +24,24 @@ app.set('view engine','handlebars');
 // app.set('views', path.join(__dirname, 'views'));
 // app.engine('html', require('ejs').renderFile);
 // app.set('view engine', 'html');
+app.use(cors(
+    {
+   origin:['http://localhost:3000'],
+   methods:['GET','POST'],
+   credentials:true,
+}
+));
+app.use(cookieParser());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(fileUpload())
 
 app.use(session({ 
+    key:'std_id',
     secret: '123456cat',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000 }
+    cookie: { expires: 60 * 60 * 24 }
   }))
 var registrationRouter = require('./routes/admin_reg_route');
 var loginRouter = require('./routes/admin_login_route');
@@ -35,6 +49,7 @@ var dashboardRouter = require('./routes/admin_dashboard_route');
 var logoutRouter = require('./routes/admin_logout_route');
 var addClassRouter=require('./routes/add_class_route');
 var addLinkRouter=require('./routes/add_link_route');
+const { verify } = require("crypto");
 
 app.use('/', registrationRouter);
 app.use('/', loginRouter);
@@ -52,10 +67,7 @@ const db = mysql.createPool({
 
 });
 
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(fileUpload())
+
 
 // app.get("/api/get", (req, res) => {
 
@@ -255,6 +267,90 @@ app.post('/create_lib',(req,res)=>{
         
    
 })
+
+const verifyJWT=(req,res,next)=>{
+
+    const token=req.headers["x-access-token"];
+
+   if(!token){
+
+    res.send("Please send token");
+    
+   }
+   else{
+
+    jwt.verify(token,"jwtSecret",(err,decoded)=>{
+
+        if(err){
+
+            res.json({auth:false,message:"athentication failed"});
+        }
+        else{
+
+            req.userId=decoded.id;
+            next();
+        }
+    })
+
+   } 
+}
+
+
+//user login
+
+app.post('/login_req',(req,res)=>{
+
+    const username=req.body.email;
+    const password=req.body.password;
+
+db.query("SELECT * FROM students WHERE username=? AND password=?",[username,password],(err,result)=>{
+
+    if(err){
+        res.send({err:err});
+    }
+    if(result.length>0){
+        const id=result[0].id;
+        const token=jwt.sign({id},
+            "jwtSecret",
+            {expiresIn: 300},
+            );
+
+        req.session.user=result
+        console.log(req.session.user)
+       
+        res.json({auth:true,token:token,result:result});
+    }
+    else{
+
+        res.json({auth:false,message:"No user exist"});
+    }
+    
+
+})
+
+})
+app.get('/isUserAuth',verifyJWT,(req,res)=>{
+
+    res.send("Authentication sucesss");
+}
+)
+
+app.get('/login_req',(req,res)=>{
+
+    if(req.session.user){
+
+        res.send({loggedIn:true,user: req.session.user})
+    }
+    else{
+        res.send({loggedIn:false})
+        
+    }
+})
+
+
+
+
+
 
 
 app.listen(3001, () => {
