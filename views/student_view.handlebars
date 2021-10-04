@@ -26,8 +26,9 @@
         <th>Profile_image</th>
         <th>Username</th>
         <th>Password</th>
-        <th>Update</th>
-        <th>Delete</th>
+        
+        {{!-- <th>Update</th>
+        <th>Delete</th> --}}
         </tr>
         <tbody>
             {{#each result}}
@@ -41,10 +42,13 @@
                 <td>{{this.grade}}</td>
                 <td>{{this.medium}}</td>
                 <td>{{this.image}}</td>
-                <td><input type="text" name="username" id="un"></td>
-                <td><input type="text" name="password" id="pw"></td>
+                 <td>{{this.username}}</td>
+                <td>{{this.password}}</td>
+
+                {{!-- <td><input type="text" name="username" class="un" id="un"></td>
+                <td><input type="text" name="password" class="pw" id="pw"></td>
                <td> <button class= "upd btn btn-primary" name="update" id="upd">Update</button></td>
-               <td> <button class="del btn btn-danger" name="delete">Delete</button></td>
+               <td> <button class="del btn btn-danger" name="delete">Delete</button></td> --}}
                 
 
             </tr>
@@ -55,7 +59,13 @@
        
     </table>
 
-</div>
+</div>  <div class="text-center mt-5">    <input type="int" name="id" class="ino" id="ino" placeholder="Enter id">
+                <input type="text" name="username" class="un" id="un" placeholder="Enter username"> 
+                <input type="text" name="password" class="pw" id="pw" placeholder="Enter password">
+                <button type="button" class= "upd btn btn-primary" name="update" id="upd" onClick="window.location.reload();">Update</button>
+                <button type="button" class="del btn btn-danger" name="delete" onClick="window.location.reload();">Delete</button></div>
+
+             
 
     
 </body>
@@ -64,7 +74,7 @@
 <script>
     $('.del').click(function(){
 
-        var ino=$(this).parent().parent().children().first().html();
+        var ino=$('.ino').val();
         $.ajax({
             type:'post',
             url:'/deleteuser',
@@ -76,14 +86,14 @@
         });
     });
 
-</script>
-<script>
-   $(document).ready(function(){
+    //   $(document).ready(function(){
     // Get value on button click and show alert
-    $("#upd").click(function(){
-         var ino=$(this).parent().parent().children().first().html();
-        var un = $("#un").val();
-        var pw =$("#pw").val();
+    $(".upd").click(function(){
+         var ino=$('.ino').val();
+        var un = $('.un').val();
+        var pw =$('.pw').val();
+        
+      
           $.ajax({
             type:'post',
             url:'/update',
@@ -95,7 +105,11 @@
         });
         
     });
-});
+//});
+
+
+</script>
+<script>
 
 </script>
 

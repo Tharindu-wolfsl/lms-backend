@@ -9,20 +9,28 @@
 <body>
 
 <div class="add_class_form text-center mt-5">
-  <h3>Add Class link</h3>
+  <h3>Add classes</h3>
 {{!-- <p> <%=(typeof alertMsg!='undefined')? alertMsg:''%></p> --}}
-<form method="post" action="add_link">
+<form action='/create_course' method="POST" enctype="multipart/form-data" >
+			  
 <div class="form-container">
+
+
+      
    
-   <div> <select class="browser-default custom-select col-sm-2 mt-4" name="class_name">
-          <option value="Mathemtaics">Mathematics</option>
-           <option value="Science">Science</option>
+   <div> <select class="browser-default custom-select col-sm-2 mt-4" name="course_name">
+          <option value="A/L Physics">A/L Physics</option>
+           <option value="A/L Comibined Maths">A/L Comibined Maths</option>
+
+           
             
       </select></div>
+
+  
 </div>
-<div class="form-container">
-    <div><input class="col-sm-2 mt-4" type="date" placeholder="Set date" name="class_date"></div>
-    <div><input class="col-sm-2 mt-4" type="time" placeholder="Set time" name="class_time"></div>
+
+
+{{!-- <div class="form-container">
   <div>
       <select  class="browser-default custom-select col-sm-2 mt-4" name="grade">
           <option value="Grade 10">Grade 10</option>
@@ -30,20 +38,17 @@
             <option value="After O/L">After O/L</option>
       </select>
   </div>
-    
-
   <div ><select class="browser-default custom-select col-sm-2 mt-4" name="medium">
           <option value="English">English</option>
            <option value="Sinhala">Sinhala</option>
             
       </select></div>
-  <div><input class="col-sm-2 mt-4" type="text" placeholder="Add zoomlink" name="Link"></div>
-</div>
+  <div><input class="col-sm-2 mt-4" type="text" placeholder="prize(per month)" name="cost"></div>
+</div> --}}
 
-<button class="btn btn-primary mt-4 mb-2" type="submit" >Add link</button>
+<button class="btn btn-primary mt-4 mb-2" type="submit" >Add class</button>
 <br>
-<a href="/view_link">Class Details</a>
-
+<a href="/view_course">course Details</a>
 
 
 </form>

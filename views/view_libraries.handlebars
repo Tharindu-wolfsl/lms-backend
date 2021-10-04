@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="container text-center mt-5" >
+
+
+    <div ><h3>Class data</h3></div>
+    
+    <table class="table mt-5">
+        <tr> <th>Lib ID</th>
+        <th>Class Name</th>
+        <th>Class Date</th>
+        <th>Class Week</th>
+        <th>Grade</th>
+        <th>Medium</th>
+        <th>Video Link</th>
+        <th>Note</th>
+         <th>Assigment</th>
+        <th>Delete</th>
+        </tr>
+        <tbody>
+            {{#each result}}
+            <tr>
+                <td>{{this.id}}</td>
+                 <td>{{this.class_name}}</td>
+                <td>{{this.class_date}}</td>
+                 <td>{{this.week}}</td>
+                <td>{{this.grade}}</td>
+                <td>{{this.medium}}</td>
+                <td>{{this.video_src}}</td>
+                 <td>{{this.class_note}}</td>
+                  <td>{{this.assign_submit}}</td>
+               <td> <button class="del btn btn-danger" name="delete" onClick="window.location.reload();" >Delete</button></td>
+                
+
+            </tr>
+            {{/each}}
+            
+        </tbody>
+
+       
+    </table>
+
+</div>
+
+    
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $('.del').click(function(){
+
+        var ino=$(this).parent().parent().children().first().html();
+        $.ajax({
+            type:'post',
+            url:'/deletelib',
+            data:{id:ino},
+            success:function(data){
+
+            }
+
+        });
+    });
+
+</script>
+

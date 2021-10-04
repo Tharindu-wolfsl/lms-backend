@@ -41,7 +41,7 @@ app.use(session({
     secret: '123456cat',
     resave: false,
     saveUninitialized: true,
-    cookie: { expires: 60 * 60 * 24 }
+    cookie: { expires: 30 * 24 * 60 * 60 * 1000 }
   }))
 var registrationRouter = require('./routes/admin_reg_route');
 var loginRouter = require('./routes/admin_login_route');
@@ -50,6 +50,7 @@ var logoutRouter = require('./routes/admin_logout_route');
 var addClassRouter=require('./routes/add_class_route');
 var addLinkRouter=require('./routes/add_link_route');
 const { verify } = require("crypto");
+const { send } = require("process");
 
 app.use('/', registrationRouter);
 app.use('/', loginRouter);
@@ -157,11 +158,15 @@ app.post('/deleteuser',function(req,res){
     var ino=req.body.std_id;
     db.query("Delete FROM students WHERE std_id="+ino+";",function(err,result){
 
-        if(err) throw err;
-        console.log(err);
+        if(err){
+            console.log(err);
+           
+        }
+      else{
         res.render('student_view',{
             result:result
-        })
+        
+        })}
         
     })
 })
@@ -196,24 +201,129 @@ app.post('/deleteclass',function(req,res){
     })
 })
 
+app.get('/view_link',(req,res)=>{
+
+    db.query("SELECT * FROM class_link",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_link',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+
+app.post('/deletelink',function(req,res){
+
+    var ino=req.body.Id;
+    db.query("Delete FROM class_link WHERE Id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_link',{
+            result:result
+        })
+        
+    })
+})
+app.get('/view_lib',(req,res)=>{
+
+    db.query("SELECT * FROM class_library",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_libraries',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deletelib',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM class_library WHERE Id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_libraries',{
+            result:result
+        })
+        
+    })
+})
+app.get('/view_course',(req,res)=>{
+
+    db.query("SELECT * FROM course_category",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_courses',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deletecourse',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM course_category WHERE Id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_courses',{
+            result:result
+        })
+        
+    })
+})
+
 
 app.post('/update',function(req,res){
 
-    var inoo=req.body.std_id;
+    var ino=req.body.std_id;
+    console.log("un"+req.body.std_id)
+
     var un=JSON.stringify(req.body.username);
     var pw=JSON.stringify(req.body.password);
+
   
-    db.query("UPDATE students SET username="+un+", password= "+pw+" WHERE std_id="+inoo+";",function(err,result){
+  
+    db.query("UPDATE students SET username="+un+", password= "+pw+" WHERE std_id="+ino+";",function(err,result){
         if(err) throw err;
         console.log(err);
         res.render('student_view',{
             result:result
+
+            
+
+
         })
 
     })
 })
 
 //shedule
+app.get('/courses',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_courses',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
 
 app.get('/class_lib',(req,res)=>{
     if(req.session.loggedinUser){
@@ -246,8 +356,10 @@ app.post('/create_lib',(req,res)=>{
     //         })
     // }}
      else {    
-         
+                var class_name=req.body.class_name;
                 var class_date=req.body.class_date;
+                var grade=req.body.grade;
+                var medium=req.body.medium;
                 var week=req.body.week;
                 var video_src=req.body.video_src;
                 var file=req.files.doc;
@@ -257,8 +369,8 @@ app.post('/create_lib',(req,res)=>{
 	             console.log(fileName);
 	             var uuidname = uuid.v1(); // this is used for unique file name
 	             var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
-	             var insertData = "INSERT INTO class_library(class_date,week,video_src,class_note) VALUES(?,?,?,?)";
-	             db.query(insertData, [class_date,week,video_src,filesrc], (err, result) => {
+	             var insertData = "INSERT INTO class_library(class_name,class_date,grade,medium,week,video_src,class_note) VALUES(?,?,?,?,?,?,?)";
+	             db.query(insertData, [class_name,class_date,grade,medium,week,video_src,filesrc], (err, result) => {
 	                 if (err) throw err
 	                 file.mv('public/docs/' + uuidname + file.name)
 	                 res.send("Data successfully save")
@@ -267,10 +379,26 @@ app.post('/create_lib',(req,res)=>{
         
    
 })
+app.post('/create_course',(req,res)=>{
+
+
+                var course_name=req.body.course_name;
+                
+                
+	             var insertData = "INSERT INTO course_category(course_name) VALUES(?)";
+	             db.query(insertData, [course_name], (err, result) => {
+	                 if (err) throw err
+	                 
+	                 res.send("Data successfully save")
+	             })
+	        
+        
+   
+})
 
 const verifyJWT=(req,res,next)=>{
 
-    const token=req.headers["x-access-token"];
+    const token=req.headers["x-access-token"]; //request token
 
    if(!token){
 
@@ -283,7 +411,7 @@ const verifyJWT=(req,res,next)=>{
 
         if(err){
 
-            res.json({auth:false,message:"athentication failed"});
+            res.json({auth:false,message:"authentication failed"});
         }
         else{
 
@@ -309,10 +437,11 @@ db.query("SELECT * FROM students WHERE username=? AND password=?",[username,pass
         res.send({err:err});
     }
     if(result.length>0){
+        //creating token
         const id=result[0].id;
         const token=jwt.sign({id},
             "jwtSecret",
-            {expiresIn: 300},
+            {expiresIn: 300,}
             );
 
         req.session.user=result
@@ -322,16 +451,19 @@ db.query("SELECT * FROM students WHERE username=? AND password=?",[username,pass
     }
     else{
 
-        res.json({auth:false,message:"No user exist"});
+        res.json({auth:false,message:"No rigth user name password combination"});
     }
     
 
 })
 
 })
+
+//api request
 app.get('/isUserAuth',verifyJWT,(req,res)=>{
 
-    res.send("Authentication sucesss");
+    res.send("Authentication success");
+    
 }
 )
 
@@ -346,6 +478,171 @@ app.get('/login_req',(req,res)=>{
         
     }
 })
+
+
+app.post('/user_update',(req,res)=>{
+
+    const phone=req.body.phone
+    const email=req.body.email
+    const grade=req.body.grade
+    const medium=req.body.medium
+    const username=req.body.username
+    const password=req.body.password
+    const newpassword=req.body.newpassword
+
+
+    db.query("UPDATE students SET phone=?, email=?, grade=?, medium=?, password=? WHERE username=? AND password=? ",[phone,email,grade,medium,newpassword,username,password],(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }
+        else{
+
+            console.log("Update success");
+        }
+
+
+
+    })
+
+
+
+})
+
+app.get('/class_req',(req,res)=>{
+
+    db.query("SELECT * FROM class_category",(err,result)=>{
+        if(err) {
+        console.log(result);
+        }
+        else{
+
+            res.send(result);
+        }
+    })
+
+
+})
+
+app.get('/getLibClass',(req,res)=>{
+
+
+    db.query("SELECT * FROM class_library",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+
+app.post('/create_g10m',(req,res)=>{
+
+    if(!req.files){
+        res.send("No file upload")
+    }
+  
+     else {    
+               
+                var class_date=req.body.date;
+            
+                var medium=req.body.medium;
+                var week=req.body.week;
+                var video_src=req.body.video;
+                var file=req.files.note;
+               
+                
+	             var fileName = file.name;
+	             console.log(fileName);
+	             var uuidname = uuid.v1(); // this is used for unique file name
+	             var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+	             var insertData = "INSERT INTO grade10math(date,medium,week,video,note) VALUES(?,?,?,?,?)";
+	             db.query(insertData, [class_date,medium,week,video_src,filesrc], (err, result) => {
+	                 if (err) throw err
+	                 file.mv('public/docs/' + uuidname + file.name)
+	                 res.send("Data successfully save")
+	             })
+	         }
+        
+   
+})
+app.get('/class_g10m',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_grade10math',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_g10m',(req,res)=>{
+
+    db.query("SELECT * FROM grade10math",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_g10m',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteg10m',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM grade10math WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_g10m',{
+            result:result
+        })
+        
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

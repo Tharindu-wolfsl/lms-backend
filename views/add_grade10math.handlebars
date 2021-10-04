@@ -12,40 +12,32 @@
 		
 		<div class="mt-5 text-center"  >
 				
-			  <form action='/create_lib' method="POST" enctype="multipart/form-data" >
+			  <form action='/create_g10m' method="POST" enctype="multipart/form-data" >
 			  
 			  <div class="text-left">
-				    <div class="mb-4 text-left"> <select class="browser-default custom-select col-sm-2 mt-4" name="class_name">
-          <option value="Mathemtaics">Mathematics</option>
-           <option value="Science">Science</option>
-            
-      </select></div>
+				    
 
-				  <div class="mb-4 text-left"><input type="date" name="class_date" placeholder="Add Date"></div>
-		  <div class="mb-4 text-left">
-      <select  class="browser-default custom-select col-sm-2 mt-4" name="grade">
-          <option value="Grade 10">Grade 10</option>
-           <option value="Grade 11">Grade 11</option>
-            <option value="After O/L">After O/L</option>
-      </select>
+				  <div class="mb-4 text-left"><input type="date" name="date" placeholder="Add Date"></div>
+	
+     
 	   <div class="mb-4 text-left" ><select class="browser-default custom-select col-sm-2 mt-4" name="medium">
           <option value="English">English</option>
            <option value="Sinhala">Sinhala</option>
             
       </select></div>
-  </div>
+
     
 			<div class="mb-4 text-left"><input type="text" name="week" placeholder="Add week"></div>
-			<div class="mb-4 text-left"><input type="text" name="video_src"  placeholder="Add video link" ></div>
+			<div class="mb-4 text-left"><input type="text" name="video"  placeholder="Add video link" ></div>
             
-			<div class="mb-4 text-center"><input type="file" name="doc" ></div></div>
+			<div class="mb-4 text-center"><input type="file" name="note" ></div></div>
 			
 			
             
 	        
 	        <button type="submit" class="btn btn-primary" >Upload</button>
 	    </form>
-		<a href="/view_lib">Class Details</a>
+		<a href="/view_g10m">Class Details</a>
 
 		</div>
 	  
