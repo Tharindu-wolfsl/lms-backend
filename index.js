@@ -49,6 +49,7 @@ var dashboardRouter = require('./routes/admin_dashboard_route');
 var logoutRouter = require('./routes/admin_logout_route');
 var addClassRouter=require('./routes/add_class_route');
 var addLinkRouter=require('./routes/add_link_route');
+var selectClassRouter=require('./routes/selectclass_route')
 const { verify } = require("crypto");
 const { send } = require("process");
 
@@ -58,6 +59,7 @@ app.use('/', dashboardRouter);
 app.use('/', logoutRouter);
 app.use('/',addClassRouter);
 app.use('/',addLinkRouter);
+app.use('/',selectClassRouter);
 
 const db = mysql.createPool({
     host: "localhost",
@@ -541,33 +543,28 @@ app.get('/getLibClass',(req,res)=>{
 })
 
 app.post('/create_g10m',(req,res)=>{
-
-    if(!req.files){
-        res.send("No file upload")
-    }
-  
-     else {    
-               
-                var class_date=req.body.date;
+ 
+    var class_date=req.body.date;
             
-                var medium=req.body.medium;
-                var week=req.body.week;
-                var video_src=req.body.video;
-                var file=req.files.note;
-               
-                
-	             var fileName = file.name;
-	             console.log(fileName);
-	             var uuidname = uuid.v1(); // this is used for unique file name
-	             var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
-	             var insertData = "INSERT INTO grade10math(date,medium,week,video,note) VALUES(?,?,?,?,?)";
-	             db.query(insertData, [class_date,medium,week,video_src,filesrc], (err, result) => {
-	                 if (err) throw err
-	                 file.mv('public/docs/' + uuidname + file.name)
-	                 res.send("Data successfully save")
-	             })
-	         }
+    var medium=req.body.medium;
+   
+    var video_src=req.body.video;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+     var insertData = "INSERT INTO grade10math(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
+     db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
+         if (err) throw err
         
+         res.send("Data successfully save")
+     })
    
 })
 app.get('/class_g10m',(req,res)=>{
@@ -611,21 +608,440 @@ app.post('/deleteg10m',function(req,res){
 
 
 
+//g10s
+
+app.post('/create_g10s',(req,res)=>{
+
+  
+    var class_date=req.body.date;
+            
+    var medium=req.body.medium;
+   
+    var video_src=req.body.video;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+     var insertData = "INSERT INTO grade10sci(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
+     db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
+         if (err) throw err
+        
+         res.send("Data successfully save")
+     })
+        
+   
+})
+app.get('/class_g10s',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_grade10sci',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_g10s',(req,res)=>{
+
+    db.query("SELECT * FROM grade10sci",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_g10s',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteg10s',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM grade10sci WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_g10s',{
+            result:result
+        })
+        
+    })
+})
 
 
+//g11m
+
+app.post('/create_g11m',(req,res)=>{
+
+  
+    var class_date=req.body.date;
+            
+    var medium=req.body.medium;
+   
+    var video_src=req.body.video;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+     var insertData = "INSERT INTO grade11math(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
+     db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
+         if (err) throw err
+        
+         res.send("Data successfully save")
+     })
+        
+   
+})
+app.get('/class_g11m',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_grade11math',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_g11m',(req,res)=>{
+
+    db.query("SELECT * FROM grade11math",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_g11m',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteg11m',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM grade11math WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_g11m',{
+            result:result
+        })
+        
+    })
+})
 
 
+//g11s
+
+app.post('/create_g11s',(req,res)=>{
+
+       
+               
+                var class_date=req.body.date;
+            
+                var medium=req.body.medium;
+               
+                var video_src=req.body.video;
+                var week1=req.body.week1;
+                var week2=req.body.week2;
+                var week3=req.body.week3;
+                var week4=req.body.week4;
+               
+                
+	            //  var fileName = file.name;
+	            //  console.log(fileName);
+	            //  var uuidname = uuid.v1(); // this is used for unique file name
+	            //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+	             var insertData = "INSERT INTO grade11sci(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
+	             db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
+	                 if (err) throw err
+	                
+	                 res.send("Data successfully save")
+	             })
+	        
+   
+})
+app.get('/class_g11s',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_grade11sci',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_g11s',(req,res)=>{
+
+    db.query("SELECT * FROM grade11sci",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_g11s',{email:req.session.emailAddress
+            ,result:result})
+        
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteg11s',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM grade11sci WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_g11s',{
+            result:result
+        })
+        
+    })
+})
 
 
+//aop
+app.post('/create_aop',(req,res)=>{
+
+   
+    var class_date=req.body.date;
+            
+    var medium=req.body.medium;
+   
+    var video_src=req.body.video;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+     var insertData = "INSERT INTO afterolphy(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
+     db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
+         if (err) throw err
+        
+         res.send("Data successfully save")
+     })
+        
+   
+})
+app.get('/class_aop',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_aolphy',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_aop',(req,res)=>{
+
+    db.query("SELECT * FROM afterolphy",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_aop',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteaop',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM afterolphy WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_aop',{
+            result:result
+        })
+        
+    })
+})
 
 
+//aoc
 
 
+app.post('/create_aoc',(req,res)=>{
+
+ 
+    var class_date=req.body.date;
+            
+    var medium=req.body.medium;
+   
+    var video_src=req.body.video;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+     var insertData = "INSERT INTO afterolmath(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
+     db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
+         if (err) throw err
+        
+         res.send("Data successfully save")
+     })
+   
+})
+app.get('/class_aoc',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_aolcmath',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_aoc',(req,res)=>{
+
+    db.query("SELECT * FROM afterolcmath",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_aoc',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteaoc',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM afterolcmath WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_aoc',{
+            result:result
+        })
+        
+    })
+})
+
+app.get('/getLibS11',(req,res)=>{
 
 
+    db.query("SELECT * FROM grade11sci ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
 
 
+            res.send(result)
+        }
 
+    })
+})
+app.get('/getLibM11',(req,res)=>{
+
+
+    db.query("SELECT * FROM grade11math ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+
+app.get('/getLibS10',(req,res)=>{
+
+
+    db.query("SELECT * FROM grade10sci ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+
+app.get('/getLibM10',(req,res)=>{
+
+
+    db.query("SELECT * FROM grade10math ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+
+app.get('/getLibAOP',(req,res)=>{
+
+
+    db.query("SELECT * FROM afterolphy ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+
+app.get('/getLibAOM',(req,res)=>{
+
+
+    db.query("SELECT * FROM afterolcmath ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
 
 
 
