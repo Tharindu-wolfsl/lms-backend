@@ -26,7 +26,8 @@
         <th>Profile_image</th>
         <th>Username</th>
         <th>Password</th>
-        
+        <th>Status</th>
+                
         {{!-- <th>Update</th>
         <th>Delete</th> --}}
         </tr>
@@ -44,7 +45,7 @@
                 <td>{{this.image}}</td>
                  <td>{{this.username}}</td>
                 <td>{{this.password}}</td>
-
+                <td>{{this.status}}</td>
                 {{!-- <td><input type="text" name="username" class="un" id="un"></td>
                 <td><input type="text" name="password" class="pw" id="pw"></td>
                <td> <button class= "upd btn btn-primary" name="update" id="upd">Update</button></td>
@@ -63,7 +64,11 @@
                 <input type="text" name="username" class="un" id="un" placeholder="Enter username"> 
                 <input type="text" name="password" class="pw" id="pw" placeholder="Enter password">
                 <button type="button" class= "upd btn btn-primary" name="update" id="upd" onClick="window.location.reload();">Update</button>
-                <button type="button" class="del btn btn-danger" name="delete" onClick="window.location.reload();">Delete</button></div>
+                <button type="button" class="del btn btn-danger" name="delete" onClick="window.location.reload();">Delete</button>
+                 <button type="button" class= "act btn btn-success" name="activate" id="act" onClick="window.location.reload();">Activate</button>
+                <button type="button" class= "deact btn btn-dark" name="deactivate" id="deact" onClick="window.location.reload();">Deactivate</button>
+                </div>
+               
 
              
 
@@ -107,9 +112,38 @@
     });
 //});
 
+ $(".act").click(function(){
+         var ino=$('.ino').val();
+        
+        
+      
+          $.ajax({
+            type:'post',
+            url:'/activate',
+            data:{std_id:ino},
+            success:function(data){
 
-</script>
-<script>
+            }
+
+        });
+        
+    });
+
+ $(".deact").click(function(){
+         var ino=$('.ino').val();
+     
+      
+          $.ajax({
+            type:'post',
+            url:'/deactivate',
+            data:{std_id:ino},
+            success:function(data){
+
+            }
+
+        });
+        
+    });
 
 </script>
 

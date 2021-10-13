@@ -22,11 +22,16 @@
        
      
         <th>Medium</th>
-        <th>Video Link</th>
+      <th>Video Link1</th>
          <th>Class Week1</th>
+           <th>Video Link2</th>
           <th>Class Week2</th>
+            <th>Video Link3</th>
            <th>Class Week3</th>
+             <th>Video Link4</th>
             <th>Class Week4</th>
+             <th>Video Link5</th>
+            <th>Class Week5</th>
          <th>Assigment</th>
         <th>Delete</th>
         </tr>
@@ -39,11 +44,17 @@
                 
                
                 <td>{{this.medium}}</td>
-                <td>{{this.video}}</td>
-                 <td>{{this.week1}}</td>
+                 <td>{{this.video1}}</td>
+                  <td>{{this.week1}}</td>
+                  <td>{{this.video2}}</td>
                   <td>{{this.week2}}</td>
+                   <td>{{this.video3}}</td>
                    <td>{{this.week3}}</td>
+                    <td>{{this.video4}}</td>
                     <td>{{this.week4}}</td>
+                      <td>{{this.video5}}</td>
+                    <td>{{this.week5}}</td>
+                 
                  
                   <td>{{this.submit}}</td>
                <td> <button class="del btn btn-danger" name="delete" onClick="window.location.reload();" >Delete</button></td>
@@ -56,6 +67,34 @@
 
        
     </table>
+     <div class="text-center mt-5"> 
+        <input type="int" name="id" class="ino" id="ino" placeholder="Enter id">
+        <select class="browser-default custom-select col-sm-2 mt-4" name="note" id="setnote" class="setnote">
+          <option value="week1">week1</option>
+           <option value="week2">week2</option>
+            <option value="week3">week3</option>
+           <option value="week4">week4</option>
+            <option value="week5">week5</option>
+        
+            
+      </select>
+ <input type="text" name="addnote" class="note" id="note" placeholder="Add note"> 
+        <div class="text-center mt-5"> <select class="browser-default custom-select col-sm-2 mt-4" name="video" id="setvideo" class="setvideo">
+          <option value="video1">Video1</option>
+           <option value="video2">Video2</option>
+            <option value="video3">Video3</option>
+           <option value="video4">Video4</option>
+            <option value="video5">Video5</option>
+        </div>
+            
+      </select>
+      <input type="text" name="addvideo" class="video" id="video" placeholder="Add video"> 
+
+                <button type="button" class= "upd btn btn-primary" name="update" id="upd" onClick="window.location.reload();">Update</button>
+              
+
+</div>
+
 
 </div>
 
@@ -76,6 +115,25 @@
             }
 
         });
+    });
+    $(".upd").click(function(){
+         var ino=$('.ino').val();
+        var setnote = $( '#setnote' ).val();
+        var setvideo = $( '#setvideo' ).val();
+        var note = $('.note').val();
+        var video =$('.video').val();
+        
+      
+          $.ajax({
+            type:'post',
+            url:'/update_aop',
+            data:{std_id:ino,setnote:setnote,setvideo:setvideo,note:note,video:video},
+            success:function(data){
+
+            }
+
+        });
+        
     });
 
 </script>

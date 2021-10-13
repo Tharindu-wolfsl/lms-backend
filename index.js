@@ -464,7 +464,7 @@ db.query("SELECT * FROM students WHERE username=? AND password=?",[username,pass
 //api request
 app.get('/isUserAuth',verifyJWT,(req,res)=>{
 
-    res.send("Authentication success");
+   res.send(req.session.user)
     
 }
 )
@@ -548,23 +548,28 @@ app.post('/create_g10m',(req,res)=>{
             
     var medium=req.body.medium;
    
-    var video_src=req.body.video;
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
     var week1=req.body.week1;
     var week2=req.body.week2;
     var week3=req.body.week3;
     var week4=req.body.week4;
+    var week5=req.body.week5;
    
     
     //  var fileName = file.name;
     //  console.log(fileName);
     //  var uuidname = uuid.v1(); // this is used for unique file name
     //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
-     var insertData = "INSERT INTO grade10math(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
-     db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
-         if (err) throw err
-        
-         res.send("Data successfully save")
-     })
+    var insertData = "INSERT INTO grade10math(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
    
 })
 app.get('/class_g10m',(req,res)=>{
@@ -617,24 +622,29 @@ app.post('/create_g10s',(req,res)=>{
             
     var medium=req.body.medium;
    
-    var video_src=req.body.video;
+    
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
     var week1=req.body.week1;
     var week2=req.body.week2;
     var week3=req.body.week3;
     var week4=req.body.week4;
+    var week5=req.body.week5;
    
     
     //  var fileName = file.name;
     //  console.log(fileName);
     //  var uuidname = uuid.v1(); // this is used for unique file name
     //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
-     var insertData = "INSERT INTO grade10sci(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
-     db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
-         if (err) throw err
-        
-         res.send("Data successfully save")
-     })
-        
+    var insertData = "INSERT INTO grade10sci(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
    
 })
 app.get('/class_g10s',(req,res)=>{
@@ -685,23 +695,31 @@ app.post('/create_g11m',(req,res)=>{
             
     var medium=req.body.medium;
    
-    var video_src=req.body.video;
+  
+    
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
     var week1=req.body.week1;
     var week2=req.body.week2;
     var week3=req.body.week3;
     var week4=req.body.week4;
+    var week5=req.body.week5;
    
     
     //  var fileName = file.name;
     //  console.log(fileName);
     //  var uuidname = uuid.v1(); // this is used for unique file name
     //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
-     var insertData = "INSERT INTO grade11math(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
-     db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
-         if (err) throw err
-        
-         res.send("Data successfully save")
-     })
+    var insertData = "INSERT INTO grade11math(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
+
         
    
 })
@@ -754,23 +772,29 @@ app.post('/create_g11s',(req,res)=>{
             
                 var medium=req.body.medium;
                
-                var video_src=req.body.video;
-                var week1=req.body.week1;
-                var week2=req.body.week2;
-                var week3=req.body.week3;
-                var week4=req.body.week4;
                
-                
-	            //  var fileName = file.name;
-	            //  console.log(fileName);
-	            //  var uuidname = uuid.v1(); // this is used for unique file name
-	            //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
-	             var insertData = "INSERT INTO grade11sci(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
-	             db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
-	                 if (err) throw err
-	                
-	                 res.send("Data successfully save")
-	             })
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+    var week5=req.body.week5;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+    var insertData = "INSERT INTO grade11sci(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
 	        
    
 })
@@ -822,23 +846,30 @@ app.post('/create_aop',(req,res)=>{
             
     var medium=req.body.medium;
    
-    var video_src=req.body.video;
+   
+     
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
     var week1=req.body.week1;
     var week2=req.body.week2;
     var week3=req.body.week3;
     var week4=req.body.week4;
+    var week5=req.body.week5;
    
     
     //  var fileName = file.name;
     //  console.log(fileName);
     //  var uuidname = uuid.v1(); // this is used for unique file name
     //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
-     var insertData = "INSERT INTO afterolphy(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
-     db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
-         if (err) throw err
-        
-         res.send("Data successfully save")
-     })
+    var insertData = "INSERT INTO afterolphy(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
         
    
 })
@@ -891,23 +922,28 @@ app.post('/create_aoc',(req,res)=>{
             
     var medium=req.body.medium;
    
-    var video_src=req.body.video;
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
     var week1=req.body.week1;
     var week2=req.body.week2;
     var week3=req.body.week3;
     var week4=req.body.week4;
+    var week5=req.body.week5;
    
     
     //  var fileName = file.name;
     //  console.log(fileName);
     //  var uuidname = uuid.v1(); // this is used for unique file name
     //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
-     var insertData = "INSERT INTO afterolmath(date,medium,video,week1,week2,week3,week4) VALUES(?,?,?,?,?,?,?)";
-     db.query(insertData, [class_date,medium,video_src,week1,week2,week3,week4], (err, result) => {
-         if (err) throw err
-        
-         res.send("Data successfully save")
-     })
+    var insertData = "INSERT INTO afterolmath(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
    
 })
 app.get('/class_aoc',(req,res)=>{
@@ -1042,28 +1078,259 @@ app.get('/getLibAOM',(req,res)=>{
 
     })
 })
+app.get('/get_link',(req,res)=>{
+
+    db.query("SELECT * from class_link where class_date=CURDATE()",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
 
 
+            res.send(result)
+        }
+    })
+
+})
+
+app.post('/dragAndDrop',(req,res)=>{
+
+    const file=req.file.classWork
 
 
+    var fileName = file.name;
+    console.log(fileName);
+    var uuidname = uuid.v1(); // this is used for unique file name
+    var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+    var insertData = "INSERT INTO class_works(class_work) VALUES(?)";
+    db.query(insertData, [filesrc], (err, result) => {
+        if (err) throw err
+        file.mv('public/docs/' + uuidname + file.name)
+        res.send("Data successfully save")
+    })
+
+})
 
 
+app.post('/update_g10m',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
 
 
+  
+  
+    db.query("UPDATE grade10math SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_g10m',{
+            result:result
+            
+
+            
 
 
+        })
+
+    })
+})
+app.post('/update_g10s',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
 
 
+  
+  
+    db.query("UPDATE grade10sci SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_g10s',{
+            result:result
+            
+
+            
 
 
+        })
+
+    })
+})
+app.post('/update_g11m',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
 
 
+  
+  
+    db.query("UPDATE grade11math SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_g11m',{
+            result:result
+            
+
+            
 
 
+        })
+
+    })
+})
+
+app.post('/update_g11s',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
 
 
+  
+  
+    db.query("UPDATE grade11sci SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_g11s',{
+            result:result
+            
+
+            
 
 
+        })
+
+    })
+})
+app.post('/update_aop',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
+
+
+  
+  
+    db.query("UPDATE afterolphy SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_aop',{
+            result:result
+            
+
+            
+
+
+        })
+
+    })
+})
+app.post('/update_aoc',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
+
+
+  
+  
+    db.query("UPDATE afterolcmath SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_aoc',{
+            result:result
+            
+
+            
+
+
+        })
+
+    })
+})
+app.post('/activate',(req,res)=>{
+
+    const id=req.body.std_id;
+
+
+    db.query(`UPDATE students SET status="activate" WHERE std_id=`+id+`;`,(err,result)=>{
+
+        if(err) throw err;
+        console.log(err);
+        res.render('student_view',{
+            result:result
+
+
+    })
+
+
+})
+
+})
+app.post('/deactivate',(req,res)=>{
+
+    const id=req.body.std_id;
+
+
+    db.query(`UPDATE students SET status="deactivate" WHERE std_id=`+id+`;`,(err,result)=>{
+
+        if(err) throw err;
+        console.log(err);
+        res.render('student_view',{
+            result:result
+
+
+    })
+
+
+})
+
+})
 
 
 app.listen(3001, () => {
