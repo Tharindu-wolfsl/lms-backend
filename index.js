@@ -52,6 +52,7 @@ var addLinkRouter=require('./routes/add_link_route');
 var selectClassRouter=require('./routes/selectclass_route')
 const { verify } = require("crypto");
 const { send } = require("process");
+const { Console } = require("console");
 
 app.use('/', registrationRouter);
 app.use('/', loginRouter);
@@ -132,6 +133,7 @@ app.get('/student_table',(req,res)=>{
         if(err) throw err;
         console.log(result);
         if(req.session.loggedinUser){
+           
             res.render('student_view',{
                 email:req.session.emailAddress,
                 result:result
@@ -280,7 +282,7 @@ app.get('/view_course',(req,res)=>{
 app.post('/deletecourse',function(req,res){
 
     var ino=req.body.id;
-    db.query("Delete FROM course_category WHERE Id="+ino+";",function(err,result){
+    db.query("Delete FROM course_category WHERE course_id="+ino+";",function(err,result){
         
         if(err) throw err;
         console.log(err);
@@ -385,10 +387,12 @@ app.post('/create_course',(req,res)=>{
 
 
                 var course_name=req.body.course_name;
+                var grade=req.body.grade;
+                var medium=req.body.medium;
                 
                 
-	             var insertData = "INSERT INTO course_category(course_name) VALUES(?)";
-	             db.query(insertData, [course_name], (err, result) => {
+	             var insertData = "INSERT INTO course_category(course_name,grade,medium) VALUES(?,?,?)";
+	             db.query(insertData, [course_name,grade,medium], (err, result) => {
 	                 if (err) throw err
 	                 
 	                 res.send("Data successfully save")
@@ -446,9 +450,14 @@ db.query("SELECT * FROM students WHERE username=? AND password=?",[username,pass
             {expiresIn: 300,}
             );
 
-        req.session.user=result
-        console.log(req.session.user)
+        req.session.user=result;
+        req.session.username=username;
+       console.log(result)
+      
        
+      
+        
+       // res.json({userdata:req.session.user});
         res.json({auth:true,token:token,result:result});
     }
     else{
@@ -514,6 +523,20 @@ app.post('/user_update',(req,res)=>{
 app.get('/class_req',(req,res)=>{
 
     db.query("SELECT * FROM class_category",(err,result)=>{
+        if(err) {
+        console.log(result);
+        }
+        else{
+
+            res.send(result);
+        }
+    })
+
+
+})
+app.get('/course_req',(req,res)=>{
+
+    db.query("SELECT * FROM course_category",(err,result)=>{
         if(err) {
         console.log(result);
         }
@@ -619,6 +642,7 @@ app.post('/create_g10s',(req,res)=>{
 
   
     var class_date=req.body.date;
+    
             
     var medium=req.body.medium;
    
@@ -999,6 +1023,30 @@ app.get('/getLibS11',(req,res)=>{
 
     })
 })
+app.get('/deactLibS11',(req,res)=>{
+
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM grade11sci WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+
+})
+
+
+})
+
 app.get('/getLibM11',(req,res)=>{
 
 
@@ -1014,6 +1062,30 @@ app.get('/getLibM11',(req,res)=>{
 
     })
 })
+app.get('/deactLibM11',(req,res)=>{
+
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM grade11math WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+
+})
+
+
+})
+
 
 app.get('/getLibS10',(req,res)=>{
 
@@ -1029,6 +1101,29 @@ app.get('/getLibS10',(req,res)=>{
         }
 
     })
+})
+app.get('/deactLibS10',(req,res)=>{
+
+     
+     var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+     var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM grade10sci WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+    console.log(err)
+}else{
+
+    res.send(result)
+    console.log(curmonth)
+   // console.log(result)
+
+}
+
+
+})
+
+
 })
 
 app.get('/getLibM10',(req,res)=>{
@@ -1046,6 +1141,30 @@ app.get('/getLibM10',(req,res)=>{
 
     })
 })
+app.get('/deactLibM10',(req,res)=>{
+
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM grade10math WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+
+})
+
+
+})
+
 
 app.get('/getLibAOP',(req,res)=>{
 
@@ -1062,8 +1181,32 @@ app.get('/getLibAOP',(req,res)=>{
 
     })
 })
+app.get('/deactLibAOP',(req,res)=>{
 
-app.get('/getLibAOM',(req,res)=>{
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM afterolphy WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+
+})
+
+
+})
+
+
+app.get('/getLibAOC',(req,res)=>{
 
 
     db.query("SELECT * FROM afterolcmath ORDER BY date",(err,result)=>{
@@ -1078,6 +1221,30 @@ app.get('/getLibAOM',(req,res)=>{
 
     })
 })
+app.get('/deactLibAOC',(req,res)=>{
+
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM afterolcmath WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+
+})
+
+
+})
+
 app.get('/get_link',(req,res)=>{
 
     db.query("SELECT * from class_link where class_date=CURDATE()",(err,result)=>{
@@ -1093,21 +1260,57 @@ app.get('/get_link',(req,res)=>{
 
 })
 
-app.post('/dragAndDrop',(req,res)=>{
+// app.post('/dragAndDrop',(req,res)=>{
 
-    const file=req.file.classWork
+//     const file=req.files.dragdrop
 
 
-    var fileName = file.name;
+//     const fileName = file.name;
+//     console.log(fileName);
+//     const uuidname = uuid.v1(); // this is used for unique file name
+//     const filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+//  const  insertData = "INSERT INTO class_works(class_works) VALUES(?)";
+//     db.query(insertData, [filesrc], (err, result) => {
+//         if (err) throw err
+//         file.mv('public/docs/' + uuidname + file.name)
+//         res.send("Data successfully save")
+//         console.log(result)
+//     })
+
+// })
+
+
+app.post('/fileupload',(req,res)=>{
+
+    
+
+    if(req.files==null)
+    {
+
+        return res.status(400).json({msg:'no file uploaded'})
+
+    }
+    const file=req.files.file
+    const fileName = file.name;
     console.log(fileName);
-    var uuidname = uuid.v1(); // this is used for unique file name
-    var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
-    var insertData = "INSERT INTO class_works(class_work) VALUES(?)";
+    const uuidname = uuid.v1(); // this is used for unique file name
+    const filesrc = 'classWork' + uuidname + file.name
+ const  insertData = "INSERT INTO class_works(class_works) VALUES(?)";
     db.query(insertData, [filesrc], (err, result) => {
         if (err) throw err
-        file.mv('public/docs/' + uuidname + file.name)
-        res.send("Data successfully save")
+        file.mv(`${__dirname}/public/docs/${file.name}`,err=>{
+            if(err){
+                console.err(err);
+                return res.status(500).send(err);
+            }
+            res.json({fileName: file.name, filePath:`/docs/${file.name}`})
+        })
     })
+
+
+    
+
+
 
 })
 
@@ -1329,6 +1532,14 @@ app.post('/deactivate',(req,res)=>{
 
 
 })
+
+})
+app.get('/logout_req',(req,res)=>{
+
+    req.session.destroy();
+
+    res.send("logout successfully!");
+    console.log("logout successfully!")
 
 })
 

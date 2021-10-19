@@ -17,7 +17,8 @@
     <table class="table mt-5">
         <tr> <th>Course ID</th>
         <th>Course Name</th>
-       
+        <th>Grade</th>
+        <th>Medium</th>
         <th>Delete</th>
         </tr>
         <tbody>
@@ -25,6 +26,8 @@
             <tr>
                 <td>{{this.course_id}}</td>
                  <td>{{this.course_name}}</td>
+                 <td>{{this.grade}}</td>
+                 <td>{{this.medium}}</td>
                
                <td> <button class="del btn btn-danger" name="delete" onClick="window.location.reload();" >Delete</button></td>
                 
