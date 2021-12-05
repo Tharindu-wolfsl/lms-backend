@@ -83,7 +83,7 @@ const db = mysql.createPool({
 
 // });
 
-app.post("/api/insert", (req, res) => {
+app.post("/insert", (req, res) => {
     
     const fname = req.body.fname
     const lname = req.body.lname
@@ -306,6 +306,29 @@ app.post('/update',function(req,res){
   
   
     db.query("UPDATE students SET username="+un+", password= "+pw+" WHERE std_id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+        res.render('student_view',{
+            result:result
+
+            
+
+
+        })
+
+    })
+})
+app.post('/save',function(req,res){
+
+    var ino=req.body.std_id;
+    console.log("un"+req.body.std_id)
+
+    var class_val=req.body.class_val;
+   
+
+  
+  
+    db.query("UPDATE students SET class="+class_val+" WHERE std_id="+ino+";",function(err,result){
         if(err) throw err;
         console.log(err);
         res.render('student_view',{
@@ -618,6 +641,59 @@ app.get('/view_g10m',(req,res)=>{
     })
 
 })
+app.post('/create_g10h',(req,res)=>{
+ 
+    var class_date=req.body.date;
+            
+    var medium=req.body.medium;
+   
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+    var week5=req.body.week5;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+    var insertData = "INSERT INTO grade10history(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
+   
+})
+app.get('/class_g10h',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_grade10history',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_g10h',(req,res)=>{
+
+    db.query("SELECT * FROM grade10history",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_g10h',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
 app.post('/deleteg10m',function(req,res){
 
     var ino=req.body.id;
@@ -633,7 +709,363 @@ app.post('/deleteg10m',function(req,res){
     })
 })
 
+//g11h
+app.post('/create_g11h',(req,res)=>{
 
+  
+    var class_date=req.body.date;
+    
+            
+    var medium=req.body.medium;
+   
+    
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+    var week5=req.body.week5;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+    var insertData = "INSERT INTO grade11history(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
+   
+})
+app.get('/class_g11h',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_grade11history',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_g11h',(req,res)=>{
+
+    db.query("SELECT * FROM grade11history",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_g11h',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteg11h',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM grade11history WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_g11h',{
+            result:result
+        })
+        
+    })
+})
+
+//g10sin
+app.post('/create_g10sin',(req,res)=>{
+
+  
+    var class_date=req.body.date;
+    
+            
+    var medium=req.body.medium;
+   
+    
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+    var week5=req.body.week5;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+    var insertData = "INSERT INTO grade10sinhala(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
+   
+})
+app.get('/class_g10sin',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_grade10sinhala',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_g10sin',(req,res)=>{
+
+    db.query("SELECT * FROM grade10sinhala",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_g10sin',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteg10sin',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM grade10sinhala WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_g10sin',{
+            result:result
+        })
+        
+    })
+})
+
+//g11sin
+app.post('/create_g11sin',(req,res)=>{
+
+  
+    var class_date=req.body.date;
+    
+            
+    var medium=req.body.medium;
+   
+    
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+    var week5=req.body.week5;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+    var insertData = "INSERT INTO grade11sinhala(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
+   
+})
+app.get('/class_g11sin',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_grade11sinhala',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_g11sin',(req,res)=>{
+
+    db.query("SELECT * FROM grade11sinhala",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_g11sin',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteg11sin',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM grade11sinhala WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_g11sin',{
+            result:result
+        })
+        
+    })
+})
+//g10e
+app.post('/create_g10e',(req,res)=>{
+
+  
+    var class_date=req.body.date;
+    
+            
+    var medium=req.body.medium;
+   
+    
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+    var week5=req.body.week5;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+    var insertData = "INSERT INTO grade10english(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
+   
+})
+app.get('/class_g10e',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_grade10english',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_g10e',(req,res)=>{
+
+    db.query("SELECT * FROM grade10english",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_g10e',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteg10e',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM grade10english WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_g10e',{
+            result:result
+        })
+        
+    })
+})
+//g11e
+app.post('/create_g11e',(req,res)=>{
+
+  
+    var class_date=req.body.date;
+    
+            
+    var medium=req.body.medium;
+   
+    
+    var video_src1=req.body.video1;
+    var video_src2=req.body.video2;
+    var video_src3=req.body.video3;
+    var video_src4=req.body.video4;
+    var video_src5=req.body.video5;
+    var week1=req.body.week1;
+    var week2=req.body.week2;
+    var week3=req.body.week3;
+    var week4=req.body.week4;
+    var week5=req.body.week5;
+   
+    
+    //  var fileName = file.name;
+    //  console.log(fileName);
+    //  var uuidname = uuid.v1(); // this is used for unique file name
+    //  var filesrc = 'http://127.0.0.1:3001/docs/' + uuidname + file.name
+    var insertData = "INSERT INTO grade11english(date,medium,video1,week1,video2,week2,video3,week3,video4,week4,video5,week5) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    db.query(insertData, [class_date,medium,video_src1,week1,video_src2,week2,video_src3,week3,video_src4,week4,video_src5,week5], (err, result) => {
+        if (err) throw err
+       
+        res.send("Data successfully save")
+    })
+   
+})
+app.get('/class_g11e',(req,res)=>{
+    if(req.session.loggedinUser){
+        res.render('add_grade11english',{email:req.session.emailAddress})
+        
+    }else{
+        res.redirect('/login');
+    }
+});
+app.get('/view_g11e',(req,res)=>{
+
+    db.query("SELECT * FROM grade11english",(err,result)=>{
+        if(err) throw err;
+        console.log(result);
+        if(req.session.loggedinUser){
+            res.render('view_g11e',{email:req.session.emailAddress
+            ,result:result})
+            
+        }else{
+            res.redirect('/login');
+        }
+    })
+
+})
+app.post('/deleteg11e',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM grade11english WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_g11e',{
+            result:result
+        })
+        
+    })
+})
 
 
 //g10s
@@ -855,6 +1287,20 @@ app.post('/deleteg11s',function(req,res){
         console.log(err);
         
         res.render('view_g11s',{
+            result:result
+        })
+        
+    })
+})
+app.post('/deleteg10h',function(req,res){
+
+    var ino=req.body.id;
+    db.query("Delete FROM grade10history WHERE id="+ino+";",function(err,result){
+        
+        if(err) throw err;
+        console.log(err);
+        
+        res.render('view_g10h',{
             result:result
         })
         
@@ -1164,6 +1610,256 @@ if(err){
 
 
 })
+//other
+
+app.get('/getLibH10',(req,res)=>{
+
+
+    db.query("SELECT * FROM grade10history ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+app.get('/deactLibH10',(req,res)=>{
+
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM grade10history WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+})
+
+})
+
+
+app.get('/getLibH11',(req,res)=>{
+
+
+    db.query("SELECT * FROM grade11history ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+app.get('/deactLibH11',(req,res)=>{
+
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM grade11history WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+
+})
+
+
+})
+
+
+
+app.get('/getLibSI10',(req,res)=>{
+
+
+    db.query("SELECT * FROM grade10sinhala ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+app.get('/deactLibSI10',(req,res)=>{
+
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM grade10sinhala WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+
+})
+
+
+})
+
+
+app.get('/getLibSI11',(req,res)=>{
+
+
+    db.query("SELECT * FROM grade11sinhala ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+app.get('/deactLibSI11',(req,res)=>{
+
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM grade11sinhala WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+
+})
+
+
+})
+
+
+app.get('/getLibE10',(req,res)=>{
+
+
+    db.query("SELECT * FROM grade10english ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+app.get('/deactLibE10',(req,res)=>{
+
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM grade10english WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+
+})
+
+
+})
+
+
+app.get('/getLibE11',(req,res)=>{
+
+
+    db.query("SELECT * FROM grade11english ORDER BY date",(err,result)=>{
+
+        if(err){
+            console.log(err)
+        }else{
+
+
+            res.send(result)
+        }
+
+    })
+})
+app.get('/deactLibE11',(req,res)=>{
+
+     
+    var curdate =new Intl.DateTimeFormat('en-GB').format(new Date())
+    var curmonth=curdate.substr(3,2)
+
+db.query("SELECT * FROM grade11english WHERE MONTH(date) < MONTH(CURDATE()) order BY date",(err,result)=>{
+
+if(err){
+   console.log(err)
+}else{
+
+   res.send(result)
+   console.log(curmonth)
+  // console.log(result)
+
+}
+
+
+})
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.get('/getLibAOP',(req,res)=>{
@@ -1375,6 +2071,36 @@ app.post('/update_g10s',function(req,res){
 
     })
 })
+app.post('/update_g10h',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
+
+
+  
+  
+    db.query("UPDATE grade10history SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_g10h',{
+            result:result
+            
+
+            
+
+
+        })
+
+    })
+})
 app.post('/update_g11m',function(req,res){
 
     var ino=req.body.std_id;
@@ -1436,6 +2162,160 @@ app.post('/update_g11s',function(req,res){
 
     })
 })
+app.post('/update_g11h',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
+
+
+  
+  
+    db.query("UPDATE grade11history SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_g11h',{
+            result:result
+            
+
+            
+
+
+        })
+
+    })
+})
+app.post('/update_g10sin',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
+
+
+  
+  
+    db.query("UPDATE grade10sinhala SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_g10sin',{
+            result:result
+            
+
+            
+
+
+        })
+
+    })
+})
+app.post('/update_g11sin',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
+
+
+  
+  
+    db.query("UPDATE grade11sinhala SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_g11sin',{
+            result:result
+            
+
+            
+
+
+        })
+
+    })
+})
+app.post('/update_g10e',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
+
+
+  
+  
+    db.query("UPDATE grade10english SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_g10e',{
+            result:result
+            
+
+            
+
+
+        })
+
+    })
+})
+app.post('/update_g11e',function(req,res){
+
+    var ino=req.body.std_id;
+    
+
+    var setvideo=req.body.setvideo;
+    var setnote=req.body.setnote;
+    var note=JSON.stringify(req.body.note);
+    var video=JSON.stringify(req.body.video);
+    console.log(setnote)
+
+
+  
+  
+    db.query("UPDATE grade11english SET "+ setnote+"="+note+", "+ setvideo+"="+video+" WHERE id="+ino+";",function(err,result){
+        if(err) throw err;
+        console.log(err);
+
+        
+        res.render('view_g11e',{
+            result:result
+            
+
+            
+
+
+        })
+
+    })
+})
+
+
+
+
 app.post('/update_aop',function(req,res){
 
     var ino=req.body.std_id;

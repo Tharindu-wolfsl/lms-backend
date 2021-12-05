@@ -28,6 +28,8 @@ router.post('/add_class', function(req, res, next) {
        
     }
 // check unique email address
+
+
 var sql='SELECT * FROM class_category WHERE class_name =?';
 db.query(sql, [inputData.class_name] ,function (err, data, fields) {
  if(err) throw err

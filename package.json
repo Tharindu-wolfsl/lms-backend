@@ -1,11 +1,13 @@
 {
   "name": "backend",
+  "homepage":"http://passmevideo.com/register",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "devStart": "nodemon index.js",
+    "build": "react-scripts build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
